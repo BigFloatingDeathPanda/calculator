@@ -1,0 +1,216 @@
+html {
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: linear-gradient(darkgray, darkslategray);
+    height: 100%;    
+}
+
+#totalCalculator {
+    background-color: lightgray;
+    height: 600px;
+    display: grid;
+    column-gap: 15px;
+    row-gap: 10px;
+    padding: 20px;
+    width: 400px;
+    margin: 50px auto;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 80px 80px 80px 80px ;
+    grid-template-areas: 
+        "screen    screen     screen   screen"
+        "sine      cosine     tangent  mode"
+        "log       ln         e        power"
+        "openParen closeParen clear    divide"
+        "seven     eight      nine     multiply"
+        "four      five       six      subtract"
+        "one       two        three    add"
+        "zero      dot        negative equals";
+    border: 1px solid black;
+    text-align: center;
+    box-shadow: 
+        1px 1px 1px 10px black,
+        2px 2px 2px 15px darkslategray;
+    border-radius: 18px;
+}
+
+.numberButton {
+    background-color: white;
+    color: black;
+    font-size: 33px;
+    height: 50px;
+}
+
+.numberButton:hover {
+    background-color: #EEEEEE;
+}
+
+.numberButton:focus {
+    outline: 1px solid #888888;
+    box-shadow: 1px;
+}
+
+
+
+
+.operationButton {
+    background-color: #aaaaaa;
+    color: white;
+    font-size: 33px;
+    height: 50px;
+}
+
+.operationButton:hover {
+    background-color: #999999
+}
+
+.operationButton:focus {
+    outline: 1px solid #888888;
+    box-shadow: 1px;
+}
+
+
+
+.otherButton {
+    background-color:#2b2e2e;
+    font-size: 33px;
+    color: white;
+    height: 50px;
+}
+
+.otherButton:hover {
+    background-color: #1a1d1d;
+}
+
+.otherButton:focus {
+    outline: 1px solid #888888;
+    box-shadow: 1px;
+}
+
+
+
+
+
+
+
+
+
+#screen {
+    grid-area: screen;
+    grid-column: 1 / span 4;
+    border: 1px solid black;
+    height: 178px;
+}
+
+#sine {
+    grid-area: sine;
+}
+
+#cosine {
+    grid-area: cosine;
+}
+
+#tangent {
+    grid-area: tangent;
+}
+
+#mode {
+    grid-area: mode;
+}
+
+#log {
+    grid-area: log;
+}
+
+#ln {
+    grid-area: ln;
+}
+
+#e {
+    grid-area: e;
+}
+
+#power {
+    grid-area: power;
+}
+
+#openParen {
+    grid-area: openParen;
+}
+
+#closeParen {
+    grid-area: closeParen;
+}
+
+#clear {
+    grid-area: clear;
+}
+
+#divide {
+    grid-area: divide;
+}
+
+#seven {
+    grid-area: seven;
+}
+
+#eight {
+    grid-area: eight;
+}
+
+#nine {
+    grid-area: nine;
+}
+
+#multiply {
+    grid-area: multiply;
+}
+
+#four {
+    grid-area: four;
+}
+
+#five {
+    grid-area: five;
+}
+
+#six {
+    grid-area: six;
+}
+
+#subtract {
+    grid-area: subtract;
+}
+
+#one {
+    grid-area: one;
+}
+
+#two {
+    grid-area: two;
+}
+
+#three {
+    grid-area: three;
+}
+
+#add {
+    grid-area: add;
+}
+
+#zero {
+    grid-area: zero;
+}
+
+#dot {
+    grid-area: dot;
+}
+
+#negative {
+    display: none;
+}
+
+#equals {
+    grid-area: equals;
+}
+
