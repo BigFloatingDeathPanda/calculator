@@ -7,7 +7,7 @@ html {
 
 #totalCalculator {
     background-color: lightgray;
-    height: 600px;
+    height: 608px;
     display: grid;
     column-gap: 15px;
     row-gap: 10px;
@@ -21,11 +21,11 @@ html {
         "screen    screen     screen   screen"
         "sine      cosine     tangent  mode"
         "log       ln         e        power"
-        "openParen closeParen clear    divide"
+        "openParen closeParen pi       divide"
         "seven     eight      nine     multiply"
         "four      five       six      subtract"
         "one       two        three    add"
-        "zero      dot        negative equals";
+        "zero      dot        clear     equals";    
     border: 1px solid black;
     text-align: center;
     box-shadow: 
@@ -33,6 +33,12 @@ html {
         2px 2px 2px 15px darkslategray;
     border-radius: 18px;
 }
+
+
+
+
+
+
 
 .numberButton {
     background-color: white;
@@ -53,6 +59,9 @@ html {
 
 
 
+
+
+
 .operationButton {
     background-color: #aaaaaa;
     color: white;
@@ -68,6 +77,9 @@ html {
     outline: 1px solid #888888;
     box-shadow: 1px;
 }
+
+
+
 
 
 
@@ -91,16 +103,43 @@ html {
 
 
 
+#oldResult2, #oldResult1 {
+    text-align: right;
+}
 
+#oldInput2, #oldInput1, #newInput {
+    text-align: left;
+}
 
-
+#degrad {
+    text-align: right;
+    font-size: 8px;
+    color: #444444;
+}
 
 #screen {
     grid-area: screen;
     grid-column: 1 / span 4;
     border: 1px solid black;
     height: 178px;
+    padding: 4px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #sine {
     grid-area: sine;
@@ -214,3 +253,6 @@ html {
     grid-area: equals;
 }
 
+#pi {
+    grid-area: pi;
+}
