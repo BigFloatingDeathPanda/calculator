@@ -178,19 +178,29 @@ function ln(a) {
 
 
 //Common operator buttons go here:
-const powerButton = document.getElementById("power").addEventListener("click", () => {
+
+
+const powerButtonClick = document.getElementById("power").addEventListener("click", powerButtonFunction);
+
+function powerButtonFunction() {
     if (newInput.innerHTML == "") {
         lastAnsClick();
     };
     newInput.innerHTML = newInput.innerHTML + " ^ ";
-});
+}
 
-const divideButton = document.getElementById("divide").addEventListener("click", () => {
+//const divideButtonKey = document.getElementById("divide").addEventListener("keydown", divideButtonFunction(e));
+const divideButtonClick = document.getElementById("divide").addEventListener("click", divideButtonFunction);
+
+function divideButtonFunction() {
+    console.log(e);
     if (newInput.innerHTML == "") {
         lastAnsClick();
     };
     newInput.innerHTML = newInput.innerHTML + " / ";
-});
+};
+
+
 
 const multipyButton = document.getElementById("multiply").addEventListener("click", () => {
     if (newInput.innerHTML == "") {
