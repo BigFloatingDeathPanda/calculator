@@ -19,13 +19,13 @@ html {
     grid-template-columns: 80px 80px 80px 80px ;
     grid-template-areas: 
         "screen    screen     screen   screen"
-        "sine      cosine     tangent  mode"
-        "log       ln         e        power"
-        "openParen closeParen pi       divide"
+        "clear     back       float    tangent"
+        "sine      ln         e        power"
+        "lastEntry lastAns    pi       divide"
         "seven     eight      nine     multiply"
         "four      five       six      subtract"
         "one       two        three    add"
-        "zero      dot        clear    equals";    
+        "zero      dot        last     equals";    
     border: 1px solid black;
     text-align: center;
     box-shadow: 
@@ -134,13 +134,27 @@ html {
 
 
 
+#lastEntry {
+    font-size: 20px;
+    grid-area: lastEntry;
+    font-variant: small-caps;
+}
 
+#floatMode {
+    font-size: 20px;
+    grid-area: float;
+    font-variant: small-caps;
+}
 
+#lastAns {
+    font-size: 20px;
+    grid-area: lastAns;
+    font-variant: small-caps;
+}
 
-
-
-
-
+#backSpace {
+    grid-area: back;
+}
 
 #sine {
     grid-area: sine;
