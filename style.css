@@ -38,7 +38,11 @@ html {
 
 
 
-
+.flexy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .numberButton {
     background-color: white;
