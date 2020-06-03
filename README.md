@@ -11,6 +11,8 @@ Mostly Done.  Several things I'd like to implement below:
 
 4) Blinking Cursor on Input Line.
 
+5) Known Bug: Negative exponents do not work correctly
+
 __
 
 
