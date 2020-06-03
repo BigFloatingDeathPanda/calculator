@@ -1,7 +1,15 @@
 This unfinished project can be found at:
 https://bigfloatingdeathpanda.github.io/calculator/
 
-I'm on roughly step... 4ish, below.
+Mostly Done.  Several things I'd like to implement below:
+
+1) Trig Functions, Log Functions, Etc.
+
+2) Keyboard Input
+
+3) Known Bug: Large Decimals/ Numbers potentially overflow the screen
+
+4) Blinking Cursor on Input Line.
 
 __
 
