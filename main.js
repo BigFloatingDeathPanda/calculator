@@ -1,7 +1,4 @@
-console.log("hello");
-
 //This set of lines gathers the display IDs and stores them for later use.
-let display_value = "0";
 let newInput = document.getElementById("newInput");
 let oldResult1 = document.getElementById("oldResult1");
 let oldInput1 = document.getElementById("oldInput1");
@@ -11,13 +8,14 @@ let currentMode = document.getElementById("degrad");
 let floatModeCounter = 0;
 
 //setting some constant values here:
-const piNum = 3.1415926;
-const eNum = 2.7182818;
-const EPSILON = Math.pow(2, -30);
+const PI = Math.PI;
+const E = Math.E;
+const EPSILON = Math.pow(2, -35);
 
 
 
-const equalsButton = document.getElementById("equals").addEventListener("click", () => {
+const equalsButtonClick = document.getElementById("equals").addEventListener("click", equalButtonFunction);
+function equalButtonFunction() {
     if (newInput.innerHTML.substr(newInput.innerHTML.length-1, 1) == " ") {
         oldInput2.innerHTML = oldInput1.innerHTML; //moving results up here
         oldInput1.innerHTML = newInput.innerHTML;
@@ -31,14 +29,11 @@ const equalsButton = document.getElementById("equals").addEventListener("click",
     oldResult1.innerHTML = operate(newInput.innerHTML);
     //oldResult1 actually displays the current results.  Sort of a misnomer really.
     //Not a big deal.  Just deal with it.
-    //I have a feeling that this button in particular is going to be a PITA
-    //so it's separated from the rest so I can work on it up here.  Well, really, you got it... you just need to figure out how to calculat things.  Start basic, my man.
-
-    //do while loop with the "while" being looking for any particular operator!
+    //"Operate" function is the heavy lifter here.  Equals button really just updates the display.
     newInput.innerHTML = ""; //clear new line for fresh calculatiions.
     }
 
-});
+};
 
 
 const operate = function(myStr) {
@@ -50,7 +45,7 @@ const operate = function(myStr) {
     //yeah yeah that should do it.
 
 
-
+    //Each operator is surrounded by spaces.  This should group into numbers and operators.
     let myArr = myStr.split(" ");
     
     //Look for ^ operator
@@ -86,14 +81,14 @@ const operate = function(myStr) {
         const addi = myArr.indexOf("+");
         const sub = myArr.indexOf("-");
 
-        //If multiply comes first and also multiply exists OR multiply uniquely exists.
+        //If add comes first and also add exists OR add uniquely exists.
         if ((addi < sub && addi != -1) || (sub == -1 && addi > -1)) {
             const n = myArr.indexOf("+");
             myStr = myStr.replace(`${myArr[n-1]} + ${myArr[n+1]}`, add(Number(myArr[n-1]), Number(myArr[n+1])));
             myArr = myStr.split(" ");
         }
 
-        //If division comes first and also division exists OR division uniquely exists.
+        //If subtr comes first and also subtr exists OR subtr uniquely exists.
         if ((sub < addi && sub != -1) || (addi == -1 && sub > -1)) {
             const n = myArr.indexOf("-");
             myStr = myStr.replace(`${myArr[n-1]} - ${myArr[n+1]}`, subtract(Number(myArr[n-1]), Number(myArr[n+1])));
@@ -104,6 +99,33 @@ const operate = function(myStr) {
 
     //Check Float Mode.
     const currentFloatMode = document.getElementById("floatMode").innerHTML;
+
+    //Consider checking for EPSILON after the decimal here.
+    /*
+    I thought this might do it but it's not what I want.
+    a) I think I'm actually affecting the array here, so I need to make a copy of it or something.
+    b) This WILL deal with things like 4.000000000000000001 it doesn't deal with
+    things like 4.234000000000000000001.  I'd have to think of some way to do that... 
+    c) So, in fact, it does NOT solve the .1 + .2 problem that you're trying to fix.
+    I mean... you could multiply the decimal by length-1, and if the answer is more than 1, run this algorithm
+    again.  In this case, it would run several times, axing off the 2, the 3, and the 4, until finally it gets rid
+    of the annoyingly long decimal.  Yeah yeah do that.
+
+
+    myArr = myStr.split(".");
+    if (myArr[1] == undefined) {
+        myStr = myArr.join("");
+    } else {
+        const myDecimal = myArr[1]/(10**myArr[1].length);
+        if (myDecimal < EPSILON) {
+            myStr = myArr[0];
+        } else {
+            myStr = myArr.join("");
+        }
+    }
+    */
+
+
         
     if (currentFloatMode == "float<br>."){ //Float
         return myStr;
@@ -119,16 +141,6 @@ const operate = function(myStr) {
     
     return myStr;
 };
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -177,75 +189,133 @@ function ln(a) {
 };
 
 
+
+//Listens for key presses on each relevant button;
+const keyPress = document.addEventListener("keydown", (e) => {
+    //console.log(e.keyCode); 
+    switch (e.key) {
+        case "^": 
+            powerButtonFunction();
+            break;
+        case "/": 
+            divideButtonFunction();
+            break;
+        case "*":
+            multiplyButtonFunction();
+            break;
+        case "+":
+            addButtonFunction();
+            break;
+        case "-":
+            subtractButtonFunction();
+            break;
+        case "Backspace":
+            backButtonFunction();
+            break;
+        case "0":
+            displayThisThing("0");
+            break;
+        case "1":
+            displayThisThing("1");
+            break;
+        case "2":
+            displayThisThing("2");
+            break;
+        case "3":
+            displayThisThing("3");
+            break;
+        case "4":
+            displayThisThing("4");
+            break;
+        case "5":
+            displayThisThing("5");
+            break;
+        case "6":
+            displayThisThing("6");
+            break;
+        case "7":
+            displayThisThing("7");
+            break;
+        case "8":
+            displayThisThing("8");
+            break;
+        case "9":
+            displayThisThing("9");
+            break;
+        case ".":
+            displayThisThing(".");
+            break;
+        case "Enter":
+            equalButtonFunction();
+            break;
+    }
+});
+
+
 //Common operator buttons go here:
-
-
 const powerButtonClick = document.getElementById("power").addEventListener("click", powerButtonFunction);
-
 function powerButtonFunction() {
     if (newInput.innerHTML == "") {
         lastAnsClick();
     };
-    newInput.innerHTML = newInput.innerHTML + " ^ ";
-}
-
-//const divideButtonKey = document.getElementById("divide").addEventListener("keydown", divideButtonFunction(e));
-const divideButtonClick = document.getElementById("divide").addEventListener("click", divideButtonFunction);
-
-function divideButtonFunction() {
-    console.log(e);
-    if (newInput.innerHTML == "") {
-        lastAnsClick();
-    };
-    newInput.innerHTML = newInput.innerHTML + " / ";
+    displayThisThing(" ^ ");
 };
 
-
-
-const multipyButton = document.getElementById("multiply").addEventListener("click", () => {
+const divideButtonClick = document.getElementById("divide").addEventListener("click", divideButtonFunction);
+function divideButtonFunction() {
     if (newInput.innerHTML == "") {
         lastAnsClick();
     };
-    newInput.innerHTML = newInput.innerHTML + " * ";
-});
+    displayThisThing(" / ")
+};
 
-const subtractButton = document.getElementById("subtract").addEventListener("click", () => {
+const multipyButtonClick = document.getElementById("multiply").addEventListener("click", multiplyButtonFunction);
+function multiplyButtonFunction() {
     if (newInput.innerHTML == "") {
         lastAnsClick();
     };
-    newInput.innerHTML = newInput.innerHTML + " - ";
-});
+    displayThisThing(" * ");
+}
 
-const addButton = document.getElementById("add").addEventListener("click", () => {
+const subtractButtonClick = document.getElementById("subtract").addEventListener("click", subtractButtonFunction);
+function subtractButtonFunction() {
     if (newInput.innerHTML == "") {
         lastAnsClick();
     };
-    newInput.innerHTML = newInput.innerHTML + " + ";
-});
+    displayThisThing(" - ");
+};
 
-const backButton = document.getElementById("backSpace").addEventListener("click", () => {
+const addButtonClick = document.getElementById("add").addEventListener("click", addButtonFunction);
+function addButtonFunction() {
+    if (newInput.innerHTML == "") {
+        lastAnsClick();
+    };
+    displayThisThing(" + ");
+};
+
+const backButton = document.getElementById("backSpace").addEventListener("click", backButtonFunction);
+function backButtonFunction() {
     //If last character was a space (i.e., an operator), remove last 3 characters,
     //Else, remove last one character.
     if (newInput.innerHTML.substr(newInput.innerHTML.length-1, 1) == " ") {
         newInput.innerHTML = newInput.innerHTML.substr(0, newInput.innerHTML.length-3);
     } else {
        newInput.innerHTML = newInput.innerHTML.substr(0, newInput.innerHTML.length-1); 
-    }  
-});
+    } 
+};
 
 const ansButton = document.getElementById("lastAns").addEventListener("click", lastAnsClick);
-
 function lastAnsClick() {
     if (oldResult1.innerHTML == "") {
-        newInput.innerHTML = "0";
+        displayThisThing("0");
     } else {
-    newInput.innerHTML = newInput.innerHTML + oldResult1.innerHTML;
+    displayThisThing(oldResult1.innerHTML);
     }
-}
+};
 
 const lastEntry = document.getElementById("lastEntry").addEventListener("click", () => {
     newInput.innerHTML = oldInput1.innerHTML;
-})
+});
 
 const floatButton = document.getElementById("floatMode").addEventListener("click", () => {
     //Float
@@ -267,28 +337,75 @@ const floatButton = document.getElementById("floatMode").addEventListener("click
     } else if (floatModeCounter%5 == 0) {
         floatMode.innerHTML = "float<br>.";
     }
-    console.log(floatModeCounter%5);
+    //console.log(floatModeCounter%5);
 });
-
-
-
-
 
 //Lines of code to display button pushes.
-const zeroButton = document.getElementById("zero").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "0";
+function displayThisThing(x) {
+    newInput.innerHTML = newInput.innerHTML + x;
+};
+
+const zeroButtonClick = document.getElementById("zero").addEventListener("click", () => {
+    displayThisThing("0");
 });
 
+const sevenButtonClick = document.getElementById("seven").addEventListener("click", () => {
+    displayThisThing("7");
+});
+
+const eightButtonClick = document.getElementById("eight").addEventListener("click", () => {
+    displayThisThing("8");
+});
+
+const nineButtonClick = document.getElementById("nine").addEventListener("click", () => {
+    displayThisThing("9");
+});
+
+const fourButtonClick = document.getElementById("four").addEventListener("click", () => {
+    displayThisThing("4");
+});
+
+const fiveButtonClick = document.getElementById("five").addEventListener("click", () => {
+    displayThisThing("5");
+});
+
+const sixButtonClick = document.getElementById("six").addEventListener("click", () => {
+    displayThisThing("6");
+});
+
+const oneButtonClick = document.getElementById("one").addEventListener("click", () => {
+    displayThisThing("1");
+});
+
+const twoButtonClick = document.getElementById("two").addEventListener("click", () => {
+    displayThisThing("2");
+});
+
+const threeButtonClick = document.getElementById("three").addEventListener("click", () => {
+    displayThisThing("3");
+});
+
+const dotButtonClick = document.getElementById("dot").addEventListener("click", () => {
+    displayThisThing(".");
+});
+
+
+
+
+
+
+
+//Unused, but planned, buttons go down here.
 const sineButton = document.getElementById("sine").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "sin(";
+    displayThisThing("sin(");
 });
 
 const cosineButton = document.getElementById("cosine").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "cos(";
+    displayThisThing("cos(");
 });
 
 const tangentButton = document.getElementById("tangent").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "tan(";
+    displayThisThing("tan(");
 });
 
 const modeButton = document.getElementById("mode").addEventListener("click", () => {
@@ -300,67 +417,27 @@ const modeButton = document.getElementById("mode").addEventListener("click", () 
 });
 
 const logButton = document.getElementById("log").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "log(";
+    displayThisThing("log(");
 });
 
 const lnButton = document.getElementById("ln").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "ln(";
+    displayThisThing("ln(");
 });
 
 const eButton = document.getElementById("e").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "e";
+    displayThisThing("e");
 });
 
 const openParenButton = document.getElementById("openParen").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "(";
+    displayThisThing("(");
 });
 
 const closeParenButton = document.getElementById("closeParen").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + ")";
-});
-
-const sevenButton = document.getElementById("seven").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "7";
-});
-
-const eightButton = document.getElementById("eight").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "8";
-});
-
-const nineButton = document.getElementById("nine").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "9";
-});
-
-const fourButton = document.getElementById("four").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "4";
-});
-
-const fiveButton = document.getElementById("five").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "5";
-});
-
-const sixButton = document.getElementById("six").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "6";
-});
-
-const oneButton = document.getElementById("one").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "1";
-});
-
-const twoButton = document.getElementById("two").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "2";
-});
-
-const threeButton = document.getElementById("three").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + "3";
-});
-
-const dotButton = document.getElementById("dot").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + ".";
+    displayThisThing(")");
 });
 
 const piButton = document.getElementById("pi").addEventListener("click", () => {
-    newInput.innerHTML = newInput.innerHTML + `&pi;`;
+    displayThisThing(`&pi;`);
 });
 
 
@@ -372,7 +449,6 @@ const allClear = document.getElementById("clear").addEventListener("click", () =
     oldResult1.innerHTML = "";
     oldResult2.innerHTML = "";
     newInput.innerHTML = "";
-    display_value = "0";
     //there's totes probs more to clear out, but I just don't know what they are yet.
 });
 
