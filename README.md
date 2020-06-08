@@ -5,7 +5,7 @@ Mostly Done.  Several things I'd like to implement below:
 
 1) Trig Functions, Log Functions, Etc.
 
-2) Keyboard Input
+2) (DONE) Keyboard Input
 
 3) Known Bug: Large Decimals/ Numbers potentially overflow the screen
 
