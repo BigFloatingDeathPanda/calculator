@@ -138,8 +138,8 @@ const operate = function(myStr) {
 
         
     if (currentFloatMode == "float<br>."){ //Float
-        //return myStr; //let's round this to 15 to deal with JS bugs.
-        return Math.round(Number(myStr)*(10**15) + EPSILON)/(10**15); //Look, JS will float to 17 decimals.  If I just round to 15
+        return myStr; //let's round this to 15 to deal with JS bugs.
+        //return Math.round(Number(myStr)*(10**15) + EPSILON)/(10**15); //Look, JS will float to 17 decimals.  If I just round to 15
                                                                       //That takes care of fringe JS issues like .1 + .2
                                                                       //Oh gosh, but of course it doesn't handle 9's
                                                                       //18.9 - 9 still buggs out.
