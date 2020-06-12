@@ -1,4 +1,5 @@
 //This set of lines gathers the display IDs and stores them for later use.
+//Note: "OldResult1" is actualy the result of the most current operation.  Whatever.
 let newInput = document.getElementById("newInput");
 let oldResult1 = document.getElementById("oldResult1");
 let oldInput1 = document.getElementById("oldInput1");
@@ -16,23 +17,20 @@ const EPSILON = Math.pow(2, -35);
 
 const equalsButtonClick = document.getElementById("equals").addEventListener("click", equalButtonFunction);
 function equalButtonFunction() {
-    if (newInput.innerHTML.substr(newInput.innerHTML.length-1, 1) == " ") {
-        oldInput2.innerHTML = oldInput1.innerHTML; //moving results up here
-        oldInput1.innerHTML = newInput.innerHTML;
-        oldResult2.innerHTML = oldResult1.innerHTML;
-        oldResult1.innerHTML="ERROR";
-        newInput.innerHTML = "";
-    } else {
+
+    //This button really just updates the display.  "operate" function is the heavy lifter here.
+
     oldInput2.innerHTML = oldInput1.innerHTML; //moving results up here
     oldInput1.innerHTML = newInput.innerHTML;
     oldResult2.innerHTML = oldResult1.innerHTML;
-    oldResult1.innerHTML = operate(newInput.innerHTML);
-    //oldResult1 actually displays the current results.  Sort of a misnomer really.
-    //Not a big deal.  Just deal with it.
-    //"Operate" function is the heavy lifter here.  Equals button really just updates the display.
-    newInput.innerHTML = ""; //clear new line for fresh calculatiions.
-    }
 
+    if (newInput.innerHTML.substr(newInput.innerHTML.length-1, 1) == " ") {
+        //that is, if you type something like "2 + " you'll get an error.  All operations are surrounded by spaces so use this for detection.
+        oldResult1.innerHTML="ERROR";
+    } else {
+    oldResult1.innerHTML = operate(newInput.innerHTML);
+    }
+    newInput.innerHTML = ""; //clears new line for fresh calculation
 };
 
 
@@ -42,10 +40,12 @@ const operate = function(myStr) {
     //I need to first check to see if the string contains sin, etc.
     //if it does, feed the inner parenthese part back through this function
     //and then replace sin(buncha numbers) with the result of this function.
-    //yeah yeah that should do it.
+    //yeah yeah that should do it.  Recursion!
 
 
-    //Each operator is surrounded by spaces.  This should group into numbers and operators.
+    //Each operator is surrounded by spaces.  This split, then, should group an array into numbers and operators.
+    //Then, we search for operators according to PEMDAS, and operate on the items just before and just after
+    //that particular operator.
     let myArr = myStr.split(" ");
     
     //Look for ^ operator
@@ -107,10 +107,12 @@ const operate = function(myStr) {
     b) This WILL deal with things like 4.000000000000000001 it doesn't deal with
     things like 4.234000000000000000001.  I'd have to think of some way to do that... 
     c) So, in fact, it does NOT solve the .1 + .2 problem that you're trying to fix.
-    I mean... you could multiply the decimal by length-1, and if the answer is more than 1, run this algorithm
+    I mean... you could multiply the decimal by (NO? length-1) 10 (I think), and if the answer is more than 1, run this algorithm
     again.  In this case, it would run several times, axing off the 2, the 3, and the 4, until finally it gets rid
     of the annoyingly long decimal.  Yeah yeah do that.
 
+
+    
 
     myArr = myStr.split(".");
     if (myArr[1] == undefined) {
@@ -120,11 +122,10 @@ const operate = function(myStr) {
         if (myDecimal < EPSILON) {
             myStr = myArr[0];
         } else {
-            myStr = myArr.join("");
+            myStr = myArr.join(".");
         }
-    }
-    */
-
+    } 
+*/
 
         
     if (currentFloatMode == "float<br>."){ //Float
@@ -192,7 +193,7 @@ function ln(a) {
 
 //Listens for key presses on each relevant button;
 const keyPress = document.addEventListener("keydown", (e) => {
-    //console.log(e.keyCode); 
+    console.log(e.key); 
     switch (e.key) {
         case "^": 
             powerButtonFunction();
