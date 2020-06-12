@@ -3,6 +3,8 @@ https://bigfloatingdeathpanda.github.io/calculator/
 
 Mostly Done.  Several things I'd like to implement below:
 
+0) (HALF DONE) Known Bug: `.1 + .2` and `18.9 - 9` produces math errors.  First one was fixed.  Second one needs dealing with still
+
 1) Trig Functions, Log Functions, Etc.
 
 2) (DONE) Keyboard Input
