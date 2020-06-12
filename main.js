@@ -111,6 +111,15 @@ const operate = function(myStr) {
     again.  In this case, it would run several times, axing off the 2, the 3, and the 4, until finally it gets rid
     of the annoyingly long decimal.  Yeah yeah do that.
 
+    //Hey past me, future me here.  Just dinking around for a moment and I found this:  `.3 - .2` produces an epsilon error, but this algorithm wont find it
+    //because it's in the other direction.  It's a buttload of 9's instead of a buttload of 0's.
+    //You'll also need to check for your decimal > (1 - Epsilon) somehow or something that I haven't put a ton of thought into yet, but something like this
+    //Oh man that sounds horrible with 1.89999999999999999 but... you'll get it.  Or just move on.  Whatever.
+
+    //A few more moments of though.... myNumberRoundedUp - myNumber < epsilon?  Maybe.
+
+    //Update, I think I can do this all with rounding.  See FloatMode below.
+
 
     
 
@@ -129,7 +138,11 @@ const operate = function(myStr) {
 
         
     if (currentFloatMode == "float<br>."){ //Float
-        return myStr;
+        //return myStr; //let's round this to 15 to deal with JS bugs.
+        return Math.round(Number(myStr)*(10**15) + EPSILON)/(10**15); //Look, JS will float to 17 decimals.  If I just round to 15
+                                                                      //That takes care of fringe JS issues like .1 + .2
+                                                                      //Oh gosh, but of course it doesn't handle 9's
+                                                                      //18.9 - 9 still buggs out.
     } else if (currentFloatMode == "fixed<br>2") { //Fixed 2
         return Number(myStr).toFixed(2);
     } else if (currentFloatMode == "fixed<br>10") { //Fixed 10
@@ -256,48 +269,33 @@ const keyPress = document.addEventListener("keydown", (e) => {
 //Common operator buttons go here:
 const powerButtonClick = document.getElementById("power").addEventListener("click", powerButtonFunction);
 function powerButtonFunction() {
-    if (newInput.innerHTML == "") {
-        lastAnsClick();
-    };
     displayThisThing(" ^ ");
 };
 
 const divideButtonClick = document.getElementById("divide").addEventListener("click", divideButtonFunction);
 function divideButtonFunction() {
-    if (newInput.innerHTML == "") {
-        lastAnsClick();
-    };
     displayThisThing(" / ")
 };
 
 const multipyButtonClick = document.getElementById("multiply").addEventListener("click", multiplyButtonFunction);
 function multiplyButtonFunction() {
-    if (newInput.innerHTML == "") {
-        lastAnsClick();
-    };
     displayThisThing(" * ");
 }
 
 const subtractButtonClick = document.getElementById("subtract").addEventListener("click", subtractButtonFunction);
 function subtractButtonFunction() {
-    if (newInput.innerHTML == "") {
-        lastAnsClick();
-    };
     displayThisThing(" - ");
 };
 
 const addButtonClick = document.getElementById("add").addEventListener("click", addButtonFunction);
 function addButtonFunction() {
-    if (newInput.innerHTML == "") {
-        lastAnsClick();
-    };
     displayThisThing(" + ");
 };
 
 const backButton = document.getElementById("backSpace").addEventListener("click", backButtonFunction);
 function backButtonFunction() {
-    //If last character was a space (i.e., an operator), remove last 3 characters,
-    //Else, remove last one character.
+    //If last character was a space (i.e., an operator), remove last 3 characters (i.e., "space, operator, space"),
+    //Else, remove last one character (because it's just a number).
     if (newInput.innerHTML.substr(newInput.innerHTML.length-1, 1) == " ") {
         newInput.innerHTML = newInput.innerHTML.substr(0, newInput.innerHTML.length-3);
     } else {
@@ -343,6 +341,10 @@ const floatButton = document.getElementById("floatMode").addEventListener("click
 
 //Lines of code to display button pushes.
 function displayThisThing(x) {
+    if ((newInput.innerHTML == "") && (x == " + " || x == " - " || x == " * " || x == " / " || x == " ^ ")) {
+        lastAnsClick();
+        //That is, if you start with an operator with nothing to operate on
+    };
     newInput.innerHTML = newInput.innerHTML + x;
 };
 
